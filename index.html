@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Desarrollo web, hosting y mantenimiento</title>
-<meta name="description" content="Diseñamos, publicamos y mantenemos páginas web y tiendas virtuales para emprendedores y empresas. Planes desde $900.000 COP.">
+<meta name="description" content="Diseñamos, publicamos y mantenemos páginas web y tiendas virtuales para emprendedores y empresas. Cotiza tu proyecto por WhatsApp.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
@@ -275,6 +275,27 @@ h3{font-size:1.3rem;line-height:1.25;letter-spacing:-.015em}
 .upkeep-item li{position:relative;padding-left:20px;font-size:.95rem}
 .upkeep-item li::before{content:"";position:absolute;left:0;top:.7em;width:8px;height:2px;border-radius:2px;background:var(--teal)}
 .fine{margin-top:36px;font-size:.88rem;color:var(--muted);max-width:80ch}
+
+.result-plan.swap{animation:rise .5s var(--ease-out)}
+.upkeep-item .amount{font-size:.92rem;font-weight:500;letter-spacing:0;line-height:1.45;color:var(--muted)}
+.plan ul{margin-top:24px}
+/* Cotización personalizada (debajo de los planes) */
+.custom-quote{position:relative;overflow:hidden;margin-top:28px;display:grid;grid-template-columns:1.3fr auto;gap:28px 56px;align-items:center;padding:clamp(32px,4vw,52px) clamp(28px,4vw,56px);border-radius:var(--r-lg);background:var(--teal);color:var(--white)}
+.custom-quote::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(460px circle at var(--mx,90%) var(--my,0%),rgba(255,255,255,.16),transparent 60%)}
+.custom-quote::after{content:"";position:absolute;right:-80px;bottom:-120px;width:320px;height:320px;border-radius:50%;border:1px solid rgba(255,255,255,.14);pointer-events:none}
+.custom-quote > *{position:relative;z-index:1}
+.custom-quote h3{color:var(--white);font-size:clamp(1.6rem,2.8vw,2.2rem);line-height:1.1;letter-spacing:-.03em;font-weight:800}
+.custom-quote p{color:rgba(255,255,255,.82);margin-top:12px;max-width:54ch}
+.cq-actions{display:flex;flex-direction:column;align-items:center;gap:14px}
+.cq-actions .btn--light{color:var(--teal-dark)}
+.cq-wa{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:.95rem;color:var(--white);text-decoration:none;opacity:.9;transition:opacity .2s}
+.cq-wa:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+.cq-wa svg{width:18px;height:18px}
+@media (max-width:1060px){
+  .custom-quote{grid-template-columns:1fr;text-align:center;justify-items:center}
+  .custom-quote p{margin-left:auto;margin-right:auto}
+}
+@media (max-width:520px){.cq-actions,.cq-actions .btn{width:100%}.cq-actions .btn{padding:0 16px;font-size:.95rem;gap:8px}}
 
 /* =========================================================
    PROCESO (la línea se llena con el scroll)
@@ -670,11 +691,11 @@ h3{font-size:1.3rem;line-height:1.25;letter-spacing:-.015em}
       <p class="lede" data-reveal style="--i:4">Diseñamos tu página web, la publicamos con dominio, hosting y certificado SSL, y la mantenemos funcionando. Trabajamos con emprendedores, profesionales y empresas.</p>
       <div class="hero-actions" data-reveal style="--i:5">
         <a href="#contacto" class="btn btn--primary">Pedir cotización<svg class="go"><use href="#go"/></svg></a>
-        <a href="#planes" class="link">Ver planes y precios</a>
+        <a href="#planes" class="link">Ver planes</a>
       </div>
       <dl class="hero-facts" data-reveal style="--i:6">
-        <div><dt>Planes desde</dt><dd>$<span data-count="900000">900.000</span> COP</dd></div>
-        <div><dt>Mantenimiento desde</dt><dd>$<span data-count="120000">120.000</span> COP/mes</dd></div>
+        <div><dt>Diseño</dt><dd>Adaptable a celulares</dd></div>
+        <div><dt>Contacto</dt><dd>Directo por WhatsApp</dd></div>
         <div><dt>Plataforma</dt><dd>WordPress</dd></div>
       </dl>
     </div>
@@ -695,7 +716,7 @@ h3{font-size:1.3rem;line-height:1.25;letter-spacing:-.015em}
         </fieldset>
         <div class="result" aria-live="polite">
           <p class="result-name" id="rName"></p>
-          <p class="result-price"><span class="from" id="rFrom">Desde</span>$<span id="rPrice">0</span><small>COP</small></p>
+          <p class="result-price result-plan" id="rPlan"></p>
           <ul class="result-list" id="rList"></ul>
           <a href="#contacto" class="btn btn--light btn--block" id="rBtn" data-plan="">Cotizar</a>
         </div>
@@ -794,15 +815,14 @@ h3{font-size:1.3rem;line-height:1.25;letter-spacing:-.015em}
 <section class="block" id="planes">
   <div class="wrap">
     <div class="head">
-      <h2 class="split">Planes y precios</h2>
-      <p class="lede" data-reveal>Tres puntos de partida según la etapa de tu negocio. Si ninguno encaja, armamos una propuesta a tu medida.</p>
+      <h2 class="split">Nuestros planes</h2>
+      <p class="lede" data-reveal>Tres puntos de partida según la etapa de tu negocio. Cada proyecto se cotiza según lo que necesitas, sin compromiso.</p>
     </div>
 
     <div class="plans">
       <article class="plan spot" data-reveal style="--i:0">
         <h3>Plan Esencial</h3>
         <p class="for">Para emprendedores y pequeños negocios que están comenzando su presencia digital.</p>
-        <p class="price"><span>$<span data-count="900000">900.000</span><small>COP</small></span></p>
         <ul>
           <li>Landing page profesional</li>
           <li>Hasta 5 secciones de contenido</li>
@@ -819,7 +839,6 @@ h3{font-size:1.3rem;line-height:1.25;letter-spacing:-.015em}
         <span class="tag">El más solicitado</span>
         <h3>Plan Empresarial</h3>
         <p class="for">Para empresas que necesitan presentar sus servicios y fortalecer su presencia digital.</p>
-        <p class="price"><span>$<span data-count="1500000">1.500.000</span><small>COP</small></span></p>
         <ul>
           <li>Sitio web corporativo de hasta 6 páginas</li>
           <li>Diseño personalizado sobre WordPress</li>
@@ -836,7 +855,6 @@ h3{font-size:1.3rem;line-height:1.25;letter-spacing:-.015em}
       <article class="plan spot" data-reveal style="--i:2">
         <h3>Plan Tienda Virtual</h3>
         <p class="for">Para negocios que quieren empezar a vender sus productos por internet.</p>
-        <p class="price"><span class="from">Desde</span><span>$<span data-count="2000000">2.000.000</span><small>COP</small></span></p>
         <ul>
           <li>Tienda virtual en WordPress y WooCommerce</li>
           <li>Configuración inicial de productos</li>
@@ -858,7 +876,7 @@ h3{font-size:1.3rem;line-height:1.25;letter-spacing:-.015em}
       <div class="upkeep-list">
         <div class="upkeep-item">
           <h4>Básico</h4>
-          <span class="amount">$<span data-count="120000">120.000</span><small>COP/mes</small></span>
+          <span class="amount">Lo esencial para que tu sitio funcione bien</span>
           <ul>
             <li>Revisión general del sitio</li>
             <li>Actualizaciones de WordPress y plugins</li>
@@ -868,7 +886,7 @@ h3{font-size:1.3rem;line-height:1.25;letter-spacing:-.015em}
         </div>
         <div class="upkeep-item is-featured">
           <h4>Empresarial</h4>
-          <span class="amount">$<span data-count="180000">180.000</span><small>COP/mes</small></span>
+          <span class="amount">Monitoreo, cambios y soporte prioritario</span>
           <ul>
             <li>Todo lo del plan básico</li>
             <li>Monitoreo y revisión técnica</li>
@@ -880,7 +898,18 @@ h3{font-size:1.3rem;line-height:1.25;letter-spacing:-.015em}
       </div>
     </div>
 
-    <p class="fine">Los precios son valores iniciales de referencia. El alcance definitivo y los costos de dominio, hosting, licencias y servicios de terceros se especifican en cada cotización.</p>
+    <div class="custom-quote spot" data-reveal>
+      <div class="cq-text">
+        <h3>¿Necesitas algo diferente?</h3>
+        <p>Los planes son un punto de partida. Cuéntanos qué necesita tu negocio y armamos una propuesta con el alcance y el precio que se ajusten a ti.</p>
+      </div>
+      <div class="cq-actions">
+        <a href="#contacto" class="btn btn--light" data-plan="Solución a la medida">Cotizar servicio personalizado<svg class="go" aria-hidden="true"><use href="#go"/></svg></a>
+        <a href="#contacto" class="cq-wa" data-wa><svg aria-hidden="true"><use href="#wa"/></svg>O escríbenos por WhatsApp</a>
+      </div>
+    </div>
+
+    <p class="fine">El valor de cada proyecto depende de su alcance. En la cotización te detallamos lo que incluye, junto con los costos de dominio, hosting, licencias y servicios de terceros, si aplican.</p>
   </div>
 </section>
 
@@ -928,8 +957,8 @@ h3{font-size:1.3rem;line-height:1.25;letter-spacing:-.015em}
     </div>
     <div class="faq">
       <details class="is-open" open data-reveal style="--i:0">
-        <summary>¿Los precios incluyen dominio y hosting?<span class="sign" aria-hidden="true"></span></summary>
-        <div class="faq-body"><p>Los precios de los planes son valores de referencia. Los costos de dominio, hosting, licencias y servicios de terceros se especifican en cada cotización, según lo que necesite tu proyecto.</p></div>
+        <summary>¿Cuánto cuesta mi página?<span class="sign" aria-hidden="true"></span></summary>
+        <div class="faq-body"><p>Depende de lo que necesites: el tipo de sitio, la cantidad de páginas y las funciones. Escríbenos y te enviamos una cotización a la medida, sin compromiso. En ella te detallamos también los costos de dominio, hosting, licencias y servicios de terceros, si aplican.</p></div>
       </details>
       <details data-reveal style="--i:1">
         <summary>¿Podré actualizar mi página yo mismo?<span class="sign" aria-hidden="true"></span></summary>
@@ -1225,10 +1254,10 @@ const PLANES = {
   let current = 0;
   const render = (key, first) => {
     const p = PLANES[key];
-    $("#rName").textContent = `Te recomendamos el ${p.nombre}`;
-    $("#rFrom").style.display = p.desde ? "" : "none";
-    tween($("#rPrice"), p.precio, first ? 0 : current, first ? 1400 : 700);
-    current = p.precio;
+    $("#rName").textContent = "Te recomendamos el plan";
+    const plan = $("#rPlan");
+    plan.classList.remove("swap"); void plan.offsetWidth; plan.classList.add("swap");
+    plan.textContent = p.nombre.replace("Plan ", "");
     $("#rList").innerHTML = p.puntos.map((t, i) => `<li style="--i:${i}">${t}</li>`).join("");
     const b = $("#rBtn"); b.dataset.plan = p.nombre; b.textContent = `Cotizar ${p.nombre}`;
     movePill();
